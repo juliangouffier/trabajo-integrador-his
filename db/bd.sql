@@ -46,7 +46,20 @@ CREATE TABLE personal (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100),
     apellido VARCHAR(100),
+    fecha_nacimiento DATE,
+    sexo ENUM('M', 'F', 'Otro') NOT NULL,
+    documento VARCHAR(15) NOT NULL,
     tipo ENUM('ENFERMERO', 'MEDICO')
+);
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    persona_id INT NOT NULL,
+    password VARCHAR(250) NOT NULL,
+    email VARCHAR(255),
+    telefono VARCHAR(50),
+    FOREIGN KEY (persona_id) REFERENCES personal(id)
 );
 
 CREATE TABLE evaluacion_enfermeria (
