@@ -6,4 +6,11 @@ const sequelize = new Sequelize('his-bd', 'root', '1234', {
     logging: false,
 });
 
-module.exports = sequelize;
+module.exports = {
+  database: 'his-bd',
+  username: 'root',
+  password: '1234',
+  host: 'localhost',
+  dialect: 'mysql',
+  logging: false,
+};

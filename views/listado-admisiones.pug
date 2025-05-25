@@ -1,0 +1,52 @@
+extends layout
+
+block content
+  .container.mt-5
+    h2.text-dark.mb-4 Listado de Admisiones
+
+    .card.shadow-sm.border-0
+      .card-body
+        form.mb-4.d-flex.flex-wrap.gap-3.align-items-end(action='/admisiones/listado', method='GET')
+          .flex-grow-1
+            label.form-label DNI del paciente
+            input.form-control(type='text', name='dni', placeholder='Ej: 12345678')
+          .flex-grow-1
+            label.form-label Fecha de ingreso
+            input.form-control(type='date', name='fecha')
+          .flex-grow-1
+            label.form-label Estado
+            select.form-select(name='estado')
+              option(value='') --
+              option Activo
+              option Cancelada
+              option Alta
+          button.btn.btn-primary(type='submit') Buscar
+
+        table.table.table-bordered.mt-3
+          thead
+            tr
+              th Paciente
+              th Fecha de ingreso
+              th Cama
+              th Acción
+          tbody
+            tr
+              td Juan Pérez
+              td 25/04/2024
+              td 104–A
+              td.text-success Activo
+            tr
+              td María López
+              td 22/04/2024
+              td 203–B
+              td.text-success Activo
+            tr
+              td Carlos Ruiz
+              td 20/04/2024
+              td 107–A
+              td.text-success Activo
+            tr
+              td Ana Gómez
+              td 10/04/2024
+              td —
+              td.text-success Activo

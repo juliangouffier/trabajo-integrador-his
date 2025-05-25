@@ -1,43 +1,114 @@
-doctype html
-html
-  head
-    title= title
-    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css')
-  body
-    .container.mt-5
-      h1.text-center.mb-4 Admisión de Paciente
-      form(action='/admisiones/registro', method='POST')
-        .mb-3
-          label(for='nombre' class='form-label') Nombre Completo
-          input(type='text' class='form-control' id='nombre' name='nombre' required)
-        .mb-3
-          label(for='edad' class='form-label') Edad
-          input(type='number' class='form-control' id='edad' name='edad' required)
-        .mb-3
-          label(for='motivo' class='form-label') Motivo de Ingreso
-          textarea(class='form-control' id='motivo' name='motivo' rows='3' required)
-        .mb-3
-          label(for='documento' class='form-label') Número de Documento
-          input(type='text' class='form-control' id='documento' name='documento' required)
-        .mb-3
-          label(for='sexo' class='form-label') Sexo
-          select(class='form-select' id='sexo' name='sexo' required)
-            option(value='M') Masculino
-            option(value='F') Femenino
-            option(value='O') Otro
-        .mb-3
-          label(for='habitacion' class='form-label') Asignar Habitación
-          select(class='form-select' id='habitacion' name='habitacion' required)
-            option(value='') Seleccione una habitación
-            option(value='101') Habitación 101
-            option(value='102') Habitación 102
-            option(value='103') Habitación 103
-            option(value='104') Habitación 104  // TODO CAMBIAR FORMA DINAMICA CAMAS DISPO
-        .mb-3
-          button(type='submit' class='btn btn-primary') Registrar Ingreso
+extends layout
 
-      // Agregar botón para volver
-      .mt-4
-        a.btn.btn-secondary(href='/') Volver atras
+block content
+  .container.mt-5
+    .d-flex.justify-content-between.align-items-center.mb-4
+      h2.text-dark Nueva Admisión
+      a.btn.btn-outline-primary(href='/admisiones/listado') Ver listado de admisiones
 
-    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js')
+    .card.shadow-sm.border-0
+      .card-body
+        form(action='/admisiones/registro', method='POST')
+          .mb-3
+            label.form-label Paciente
+            .d-flex.align-items-center.gap-3
+              select#paciente-select.form-select(name='paciente', style='width: 100%;', required)
+                option(value='') Buscar paciente por DNI
+              a.btn.btn-outline-secondary(data-bs-toggle='modal', data-bs-target='#modalNuevoPaciente') Nuevo Paciente
+
+          .mb-3
+            label.form-label Fecha de ingreso
+            input.form-control(type='date', name='fechaIngreso', required)
+
+          .mb-3
+            label.form-label Motivo
+            input.form-control(type='text', name='motivo', placeholder='Ingrese motivo', required)
+
+          .mb-3
+            label.form-label Cama
+            select.form-select(name='cama', required)
+              optgroup(label='Sector A')
+                option(value='C01-100') Cama 01 – Habitación 100
+                option(value='C02-100') Cama 02 – Habitación 100
+              optgroup(label='Sector B')
+                option(value='C01-200') Cama 01 – Habitación 200
+
+          .mb-3
+            label.form-label Estado
+            select.form-select(name='estado', required)
+              option(value='Activo') Activa
+              option(value='Cancelada') Cancelada
+              option(value='Alta') Alta
+
+          button.btn.btn-primary.w-100(type='submit') Registrar Admisión
+
+  // MODAL NUEVO PACIENTE
+  .modal.fade(id='modalNuevoPaciente' tabindex='-1')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5.modal-title Nuevo Paciente
+          button.btn-close(type='button', data-bs-dismiss='modal')
+        .modal-body
+          form(action='/pacientes/crear', method='POST')
+            .row
+              .col-md-6.mb-3
+                label.form-label DNI
+                input.form-control(type='text', name='dni', required)
+              .col-md-6.mb-3
+                label.form-label Nombre
+                input.form-control(type='text', name='nombre', required)
+            .row
+              .col-md-6.mb-3
+                label.form-label Apellido
+                input.form-control(type='text', name='apellido', required)
+              .col-md-6.mb-3
+                label.form-label Sexo
+                select.form-select(name='sexo', required)
+                  option(value='') Seleccionar
+                  option(value='M') Masculino
+                  option(value='F') Femenino
+                  option(value='O') Otro
+            .mb-3
+              label.form-label Fecha de nacimiento
+              input.form-control(type='date', name='fechaNacimiento', required)
+            .mb-3
+              label.form-label Dirección
+              input.form-control(type='text', name='direccion', required)
+            .mb-3
+              label.form-label Teléfono
+              input.form-control(type='text', name='telefono', required)
+            .mb-3
+              label.form-label Contacto de emergencia
+              input.form-control(type='text', name='contactoEmergencia')
+
+            .d-flex.justify-content-end.mt-3
+              button.btn.btn-outline-secondary(type='button', data-bs-dismiss='modal') Cancelar
+              button.btn.btn-primary.ms-2(type='submit') Guardar
+
+block scripts
+  script(src='https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js')
+  script(src='https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js')
+  script.
+    $(document).ready(function() {
+      $('#paciente-select').select2({
+        theme: 'bootstrap-5',
+        placeholder: 'Buscar paciente por DNI',
+        ajax: {
+          url: '/pacientes/predict', // 👈 este endpoint
+          dataType: 'json',
+          delay: 250,
+          data: function (params) {
+            return { search: params.term };
+          },
+          processResults: function (data) {
+            return {
+              results: data.map(p => ({
+                id: p.id,
+                text: `${p.dni} - ${p.nombre} ${p.apellido}`
+              }))
+            };
+          }
+        }
+      });
+    });
