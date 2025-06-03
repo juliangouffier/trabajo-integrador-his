@@ -4,10 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config();
-var authRouter = require('./routes/auth')
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
+const authRouter = require('./routes/auth')
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const sectorRouter = require('./routes/sector');
+const habitacionRouter = require('./routes/habitacion');
+const camaRouter = require('./routes/cama');
+const internacionRouter = require('./routes/internacion');
 
 const PORT = process.env.PORT || 3001;
 var app = express();
@@ -23,7 +26,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', authRouter);
 app.use('/', indexRouter);
-
+app.use('/sectores', sectorRouter);
+app.use('/', internacionRouter);
+app.use('/camas', camaRouter);
 //app.use('/home', indexRouter);
 app.use('/', usersRouter);
 

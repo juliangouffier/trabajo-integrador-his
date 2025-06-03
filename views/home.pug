@@ -1,25 +1,47 @@
 extends layout
 
 block content
-  .container.text-center.mt-5
-    img(src='/images/logo.png', alt='Logo', width='80', class='mb-3')
-    h2.text-dark HOSPITAL
-    h6.text-secondary.mb-5 INFORMATION SYSTEM
+  .container-fluid
+    .row
+      .col-md-2.bg-light.border-end.min-vh-100.py-4
+        .text-center.mb-4
+          img(src='/images/logo.png', alt='Logo', width='60')
+          h5.mt-2.text-dark HOSPITAL
+          small.text-secondary INFORMATION SYSTEM
 
-    .row.g-4.justify-content-center
-      each item in items
-        .col-12.col-md-4
-          a(href=item.link class='text-decoration-none')
-            .card.shadow-sm.border-0.p-4
-              .mb-3
-                i(class=item.icon style="font-size: 2rem; color: #0d6efd;")
-              h5.text-dark.mb-1= item.title
-              p.text-muted= item.desc
+        .nav.flex-column.mt-4
+          each item in items
+            a.nav-link.py-3.d-flex.align-items-center.gap-2(href=item.link)
+              i(class=item.icon style='font-size: 1.2rem; color: #0d6efd;')
+              span= item.title
 
-    .row.mt-4.justify-content-center
-      each quick in quickAccess
-        .col-3
-          a(href=quick.link class='text-decoration-none')
-            .text-center
-              i(class=quick.icon style="font-size: 1.5rem; color: #0d6efd;")
-              p.text-dark.mt-1= quick.title
+        hr
+        .nav.flex-column
+          each quick in quickAccess
+            a.nav-link.d-flex.align-items-center.gap-2(href=quick.link)
+              i(class=quick.icon style='font-size: 1rem; color: #0d6efd;')
+              span= quick.title
+
+      .col-md-10.p-4.bg-light.min-vh-100
+        .d-flex.justify-content-between.align-items-center.mb-4
+          h4.text-primary.fw-bold.mb-0 Visualización de Camas por Habitación
+          a.btn.btn-outline-primary(href='/habitaciones/crear') Crear Habitación
+
+        .row.g-4
+          each grupo in camasPorHabitacion
+            .col-md-6.col-lg-4
+              .card.shadow.border-0.rounded-4.bg-white
+                .card-header.bg-primary.text-white.fw-semibold.text-start.rounded-top-4
+                  | 🛏️ Habitación #{grupo.habitacion} - Sector #{grupo.sector}
+                .card-body.d-flex.gap-4.flex-wrap.justify-content-center.p-4
+                  each cama in grupo.camas
+                    .text-center
+                      .cama-estado.shadow-sm.rounded-circle(style=`border: 3px solid ${cama.color}; padding: 10px; background-color: #fff`)
+                        img(src='/images/cama.png', alt='Cama', width='30', height='30')
+                      .cama-texto.mt-2.text-secondary.small
+                        strong #{cama.numero}:
+                        |  #{cama.estado} -
+                        span.badge.rounded-pill.bg-light.text-dark.ms-1 #{cama.genero === 'M' ? 'Masculino' : cama.genero === 'F' ? 'Femenino' : 'Otro'}
+
+block scripts
+  link(rel='stylesheet', href='/stylesheets/home.css')

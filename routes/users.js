@@ -23,4 +23,17 @@ router.get('/pacientes/predict', async (req, res) => {
   }
 });
 
+router.get('/pacientes/buscar', async (req, res) => {
+  const q = req.query.q || '';
+  const pacientes = await Paciente.findAll({
+    where: {
+      [Op.or]: [
+        { dni: { [Op.like]: `%${q}%` } }
+      ]
+    },
+    limit: 5
+  });
+  res.json(pacientes);
+});
+
 module.exports = router;

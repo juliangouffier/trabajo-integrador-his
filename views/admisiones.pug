@@ -2,113 +2,117 @@ extends layout
 
 block content
   .container.mt-5
-    .d-flex.justify-content-between.align-items-center.mb-4
-      h2.text-dark Nueva Admisión
-      a.btn.btn-outline-primary(href='/admisiones/listado') Ver listado de admisiones
+    h2.text-dark.mb-4 Admisión de Pacientes
 
-    .card.shadow-sm.border-0
+    .card.shadow-sm.border-0.p-4
       .card-body
-        form(action='/admisiones/registro', method='POST')
-          .mb-3
-            label.form-label Paciente
-            .d-flex.align-items-center.gap-3
-              select#paciente-select.form-select(name='paciente', style='width: 100%;', required)
-                option(value='') Buscar paciente por DNI
-              a.btn.btn-outline-secondary(data-bs-toggle='modal', data-bs-target='#modalNuevoPaciente') Nuevo Paciente
+        .mb-4
+          label.form-label Buscar Paciente por DNI
+          .input-group
+            input.form-control(type='text', id='buscarDni', placeholder='Ingrese DNI')
+            button.btn.btn-outline-primary(type='button', id='btnBuscarPaciente') Buscar
 
-          .mb-3
-            label.form-label Fecha de ingreso
-            input.form-control(type='date', name='fechaIngreso', required)
+        form(id='form-admision', action='/admisiones/registro', method='POST')
+          input(type='hidden', name='pacienteId', id='pacienteId')
 
-          .mb-3
-            label.form-label Motivo
-            input.form-control(type='text', name='motivo', placeholder='Ingrese motivo', required)
+          .row.mb-3
+            .col-md-6
+              label.form-label Nombre(s)*
+              input.form-control(type='text', name='nombre', id='nombre', required)
+            .col-md-6
+              label.form-label Apellido(s)*
+              input.form-control(type='text', name='apellido', id='apellido', required)
 
-          .mb-3
-            label.form-label Cama
-            select.form-select(name='cama', required)
-              optgroup(label='Sector A')
-                option(value='C01-100') Cama 01 – Habitación 100
-                option(value='C02-100') Cama 02 – Habitación 100
-              optgroup(label='Sector B')
-                option(value='C01-200') Cama 01 – Habitación 200
+          .row.mb-3
+            .col-md-4
+              label.form-label Fecha de Nacimiento*
+              input.form-control(type='date', name='fechaNacimiento', id='fechaNacimiento', required)
+            .col-md-4
+              label.form-label Género*
+              select.form-select(name='genero', id='genero', required)
+                option(value='') Seleccionar
+                option(value='M') Masculino
+                option(value='F') Femenino
+                option(value='O') Otro
+            .col-md-4
+              label.form-label Documento*
+              input.form-control(type='text', name='dni', id='dni', required)
 
-          .mb-3
-            label.form-label Estado
-            select.form-select(name='estado', required)
-              option(value='Activo') Activa
-              option(value='Cancelada') Cancelada
-              option(value='Alta') Alta
+          .row.mb-3
+            .col-md-6
+              label.form-label Contacto (Teléfono o Email)
+              input.form-control(type='text', name='contacto', id='contacto')
+            .col-md-6
+              label.form-label Obra Social
+              select.form-select(name='obraSocial', id='obraSocial')
+                option(value='') Sin obra social
 
-          button.btn.btn-primary.w-100(type='submit') Registrar Admisión
+          .row.mb-3
+            .col-md-6
+              label.form-label Contacto de Emergencia
+              input.form-control(type='text', name='contactoEmergencia', id='contactoEmergencia')
+            .col-md-6
+              label.form-label Notas Adicionales
+              textarea.form-control(name='notas', id='notas')
 
-  // MODAL NUEVO PACIENTE
-  .modal.fade(id='modalNuevoPaciente' tabindex='-1')
-    .modal-dialog
-      .modal-content
-        .modal-header
-          h5.modal-title Nuevo Paciente
-          button.btn-close(type='button', data-bs-dismiss='modal')
-        .modal-body
-          form(action='/pacientes/crear', method='POST')
-            .row
-              .col-md-6.mb-3
-                label.form-label DNI
-                input.form-control(type='text', name='dni', required)
-              .col-md-6.mb-3
-                label.form-label Nombre
-                input.form-control(type='text', name='nombre', required)
-            .row
-              .col-md-6.mb-3
-                label.form-label Apellido
-                input.form-control(type='text', name='apellido', required)
-              .col-md-6.mb-3
-                label.form-label Sexo
-                select.form-select(name='sexo', required)
-                  option(value='') Seleccionar
-                  option(value='M') Masculino
-                  option(value='F') Femenino
-                  option(value='O') Otro
-            .mb-3
-              label.form-label Fecha de nacimiento
-              input.form-control(type='date', name='fechaNacimiento', required)
-            .mb-3
-              label.form-label Dirección
-              input.form-control(type='text', name='direccion', required)
-            .mb-3
-              label.form-label Teléfono
-              input.form-control(type='text', name='telefono', required)
-            .mb-3
-              label.form-label Contacto de emergencia
-              input.form-control(type='text', name='contactoEmergencia')
+          .row.mb-3
+            .col-md-6.form-check
+              input.form-check-input(type='checkbox', id='emergencia', name='emergencia')
+              label.form-check-label(for='emergencia') Llegada por Emergencia
+            .col-md-6.form-check
+              input.form-check-input(type='checkbox', id='derivado', name='derivado')
+              label.form-check-label(for='derivado') Paciente Derivado
 
-            .d-flex.justify-content-end.mt-3
-              button.btn.btn-outline-secondary(type='button', data-bs-dismiss='modal') Cancelar
-              button.btn.btn-primary.ms-2(type='submit') Guardar
+          .row.mb-3
+            .col-md-6
+              label.form-label Fecha de Ingreso*
+              input.form-control(type='date', name='fechaIngreso', required)
+            .col-md-6
+              label.form-label Motivo de Internación*
+              input.form-control(type='text', name='motivo', required)
 
-block scripts
-  script(src='https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js')
-  script(src='https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js')
-  script.
-    $(document).ready(function() {
-      $('#paciente-select').select2({
-        theme: 'bootstrap-5',
-        placeholder: 'Buscar paciente por DNI',
-        ajax: {
-          url: '/pacientes/predict', // 👈 este endpoint
-          dataType: 'json',
-          delay: 250,
-          data: function (params) {
-            return { search: params.term };
-          },
-          processResults: function (data) {
-            return {
-              results: data.map(p => ({
-                id: p.id,
-                text: `${p.dni} - ${p.nombre} ${p.apellido}`
-              }))
-            };
+          .row.mb-3
+            .col-md-6
+              label.form-label Seleccionar Cama*
+              select.form-select(name='cama', required)
+                option(value='') Seleccione una cama disponible
+
+          .row.mb-3
+            .col-md-6
+              label.form-label Estado de Internación*
+              select.form-select(name='estado', required)
+                option(value='Activo') Activa
+                option(value='Cancelada') Cancelada
+                option(value='Alta') Alta
+
+          .d-flex.justify-content-end.mt-4
+            a.btn.btn-outline-secondary(href='/home') Cancelar
+            button.btn.btn-primary.ms-2(type='submit') Registrar Paciente
+
+  block scripts
+    script.
+      document.getElementById('btnBuscarPaciente').addEventListener('click', async () => {
+        const dni = document.getElementById('buscarDni').value.trim();
+        if (!dni) return;
+        try {
+          const res = await fetch(`/pacientes/buscar?q=${dni}`);
+          const pacientes = await res.json();
+          if (pacientes.length > 0) {
+            const p = pacientes[0];
+            document.getElementById('pacienteId').value = p.id;
+            document.getElementById('nombre').value = p.nombre;
+            document.getElementById('apellido').value = p.apellido;
+            document.getElementById('dni').value = p.dni;
+            document.getElementById('fechaNacimiento').value = p.fechaNacimiento;
+            document.getElementById('genero').value = p.genero;
+            document.getElementById('contacto').value = p.contacto;
+            document.getElementById('obraSocial').value = p.obraSocial;
+            document.getElementById('contactoEmergencia').value = p.contactoEmergencia;
+            document.getElementById('notas').value = p.notas;
+          } else {
+            alert('Paciente no encontrado');
           }
+        } catch (err) {
+          alert('Error al buscar paciente');
         }
       });
-    });

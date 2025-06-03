@@ -11,21 +11,72 @@ const habitaciones = [
 const quickAccess = [
   { title: 'Pacientes', link: '/pacientes', icon: 'bi bi-people' },
   { title: 'Citas', link: '/citas', icon: 'bi bi-calendar2-week' },
-  { title: 'Reportes', link: '/reportes', icon: 'bi bi-bar-chart' },
-  { title: 'Configuración', link: '/configuracion', icon: 'bi bi-gear' }
+  { title: 'Reportes', link: '/reportes', icon: 'bi bi-bar-chart' }
 ];
 
 const items = [
-  { title: 'Admisiones', desc: 'Registrar ingreso de pacientes.', link: '/admisiones', icon: 'bi bi-hospital' },
-  { title: 'Habitaciones', desc: 'Gestionar habitaciones y camas.', link: '/habitaciones', icon: 'bi bi-door-open' },
-  { title: 'Evaluación de Enfermería', desc: 'Registrar evaluaciones iniciales.', link: '/evaluacion-enfermeria', icon: 'bi bi-clipboard-heart' }
+  { title: 'Nueva Admision', desc: 'Registrar ingreso de pacientes.', link: '/admisiones', icon: 'bi bi-hospital' },
+  { title: 'Historia Clinica', desc: 'Gestionar internaciones.', link: '#', icon: 'bi bi-door-open' },
+  { title: 'Evaluación de Enfermería', desc: 'Registrar evaluaciones iniciales.', link: '#', icon: 'bi bi-clipboard-heart' }
 ];
+
+const camasPorHabitacion = [
+  {
+    habitacion: '101',
+    sector: 'A',
+    camas: [
+      { numero: 'C1', estado: 'LIBRE', color: '#198754', genero: 'M' },
+      { numero: 'C2', estado: 'OCUPADA', color: '#dc3545', genero: 'F' }
+    ]
+  },
+  {
+    habitacion: '102',
+    sector: 'A',
+    camas: [
+      { numero: 'C1', estado: 'LIBRE', color: '#198754', genero: 'M' },
+      { numero: 'C2', estado: 'OCUPADA', color: '#dc3545', genero: 'F' }
+    ]
+  },
+  {
+    habitacion: '103',
+    sector: 'A',
+    camas: [
+      { numero: 'C1', estado: 'LIBRE', color: '#198754', genero: 'M' },
+      { numero: 'C2', estado: 'OCUPADA', color: '#dc3545', genero: 'F' }
+    ]
+  },
+  {
+    habitacion: '104',
+    sector: 'A',
+    camas: [
+      { numero: 'C1', estado: 'LIBRE', color: '#198754', genero: 'M' },
+      { numero: 'C2', estado: 'OCUPADA', color: '#dc3545', genero: 'F' }
+    ]
+  },
+  {
+    habitacion: '105',
+    sector: 'A',
+    camas: [
+      { numero: 'C1', estado: 'LIBRE', color: '#198754', genero: 'M' },
+      { numero: 'C2', estado: 'OCUPADA', color: '#dc3545', genero: 'F' }
+    ]
+  },
+  {
+    habitacion: '106',
+    sector: 'A',
+    camas: [
+      { numero: 'C1', estado: 'LIBRE', color: '#198754', genero: 'M' },
+      { numero: 'C2', estado: 'OCUPADA', color: '#dc3545', genero: 'F' }
+    ]
+  },
+]
 
 router.get('/home', requireAuth, (req, res) => {
   res.render('home', {
     title: 'Sistema de Información Hospitalaria',
     items,
-    quickAccess
+    quickAccess,
+    camasPorHabitacion
   });
 });
 
@@ -44,18 +95,6 @@ router.post('/admisiones/registro', function(req, res, next) {
   console.log('Datos del paciente:', { nombre, edad, motivo, documento, sexo, habitacion });
 
   res.redirect('/admisiones');
-});
-
-router.get('/habitaciones', function(req, res, next) {
-  res.render('habitaciones', { title: 'Gestión de Habitaciones', habitaciones });
-});
-
-router.post('/habitaciones/crear', function(req, res, next) {
-  const { numero, estado, camas, tipo } = req.body;
-
-  console.log('Habitación creada:', { numero, estado, camas, tipo });
-
-  res.redirect('/habitaciones');
 });
 
 module.exports = router;

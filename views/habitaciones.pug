@@ -1,39 +1,47 @@
-doctype html
-html
-  head
-    title= title
-    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css')
-  body
+extends layout
+block content
     .container.mt-5
       h1.text-center.mb-4 Gestión de Habitaciones
-      // Formulario para agregar una nueva habitación
-      form(action='/habitaciones/crear', method='POST')
+
+      if error
+        .alert.alert-danger= error
+
+      form(action='/habitaciones/crear' method='POST')
         .mb-3
           label(for='numero' class='form-label') Número de Habitación
           input(type='text' class='form-control' id='numero' name='numero' required)
+
         .mb-3
           label(for='estado' class='form-label') Estado
           select(class='form-select' id='estado' name='estado' required)
             option(value='Disponible') Disponible
             option(value='Ocupada') Ocupada
             option(value='Mantenimiento') En mantenimiento
+
         .mb-3
           label(for='camas' class='form-label') Número de Camas
           input(type='number' class='form-control' id='camas' name='camas' min='1' required)
+
         .mb-3
           label(for='tipo' class='form-label') Tipo de Habitación
           select(class='form-select' id='tipo' name='tipo' required)
             option(value='Individual') Individual
             option(value='Doble') Doble
             option(value='Familiar') Familiar
+
+        .mb-3
+          label(for='sector_id' class='form-label') Sector
+          select(class='form-select' id='sector_id' name='sector_id' required)
+            option(value='' disabled selected) -- Seleccione un sector --
+            each s in sectores
+              option(value=s.id)= s.nombre
+
         .mb-3
           button(type='submit' class='btn btn-primary') Crear Habitación
 
-      // Agregar botón para volver
       .mt-4
         a.btn.btn-secondary(href='/habitaciones') Volver a Habitaciones
 
-      // Mostrar lista de habitaciones existentes
       h2.mt-5.text-center Lista de Habitaciones
       table.table.table-striped
         thead
@@ -42,6 +50,7 @@ html
             th Estado
             th Camas
             th Tipo
+            th Sector
             th Acciones
         tbody
           each habitacion in habitaciones
@@ -50,6 +59,7 @@ html
               td= habitacion.estado
               td= habitacion.camas
               td= habitacion.tipo
+              td= habitacion.sector
               td
                 a.btn.btn-warning(href=`/habitaciones/editar/${habitacion.id}`) Editar
                 a.btn.btn-danger.ml-2(href=`/habitaciones/eliminar/${habitacion.id}`) Eliminar
