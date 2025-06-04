@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Paciente', {
+  const Paciente = sequelize.define('Paciente', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: false
     },
+    email: {
+      type: DataTypes.STRING(200),
+      allowNull: false
+    },
     telefono: {
       type: DataTypes.STRING(50),
       allowNull: false
@@ -42,4 +46,13 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'paciente',
     timestamps: false
   });
+
+  Paciente.associate = models => {
+    Paciente.belongsTo(models.ObraSocial, {
+      foreignKey: 'obra_social_id',
+      as: 'obraSocial'
+    });
+  };
+
+  return Paciente;
 };

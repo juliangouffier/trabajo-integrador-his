@@ -94,3 +94,17 @@ CREATE TABLE evaluacion_medica (
     FOREIGN KEY (admision_id) REFERENCES admision(id),
     FOREIGN KEY (medico_id) REFERENCES personal(id)
 );
+
+CREATE TABLE obra_social (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT
+);
+
+ALTER TABLE paciente
+ADD COLUMN obra_social_id INT,
+ADD FOREIGN KEY (obra_social_id) REFERENCES obra_social(id);
+
+ALTER TABLE paciente
+ADD COLUMN email VARCHAR(100);
+

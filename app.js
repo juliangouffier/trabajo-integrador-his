@@ -6,11 +6,12 @@ var logger = require('morgan');
 require('dotenv').config();
 const authRouter = require('./routes/auth')
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const pacientesRouter = require('./routes/paciente');
 const sectorRouter = require('./routes/sector');
 const habitacionRouter = require('./routes/habitacion');
 const camaRouter = require('./routes/cama');
 const internacionRouter = require('./routes/internacion');
+const admisionesRouter = require('./routes/admisiones');
 
 const PORT = process.env.PORT || 3001;
 var app = express();
@@ -30,7 +31,8 @@ app.use('/sectores', sectorRouter);
 app.use('/', internacionRouter);
 app.use('/camas', camaRouter);
 //app.use('/home', indexRouter);
-app.use('/', usersRouter);
+app.use('/', pacientesRouter);
+app.use('/', admisionesRouter);
 
 /*app.use(function(req, res, next) {
   next(createError(404));

@@ -11,6 +11,7 @@ block content
           .input-group
             input.form-control(type='text', id='buscarDni', placeholder='Ingrese DNI')
             button.btn.btn-outline-primary(type='button', id='btnBuscarPaciente') Buscar
+            button.btn.btn-outline-danger(type='button', id='limpiarCampos') Limpiar
 
         form(id='form-admision', action='/admisiones/registro', method='POST')
           input(type='hidden', name='pacienteId', id='pacienteId')
@@ -33,23 +34,27 @@ block content
                 option(value='') Seleccionar
                 option(value='M') Masculino
                 option(value='F') Femenino
-                option(value='O') Otro
             .col-md-4
               label.form-label Documento*
               input.form-control(type='text', name='dni', id='dni', required)
 
           .row.mb-3
             .col-md-6
-              label.form-label Contacto (Teléfono o Email)
-              input.form-control(type='text', name='contacto', id='contacto')
+              label.form-label Teléfono
+              input.form-control(type='text', name='telefono', id='telefono')
+            .col-md-6
+              label.form-label Email
+              input.form-control(type='text', name='email', id='email')
             .col-md-6
               label.form-label Obra Social
               select.form-select(name='obraSocial', id='obraSocial')
                 option(value='') Sin obra social
+                each obra in obrasSociales
+                  option(value=obra.id)= obra.nombre
 
           .row.mb-3
             .col-md-6
-              label.form-label Contacto de Emergencia
+              label.form-label Telefono de Emergencia
               input.form-control(type='text', name='contactoEmergencia', id='contactoEmergencia')
             .col-md-6
               label.form-label Notas Adicionales
@@ -76,43 +81,71 @@ block content
               label.form-label Seleccionar Cama*
               select.form-select(name='cama', required)
                 option(value='') Seleccione una cama disponible
-
-          .row.mb-3
-            .col-md-6
-              label.form-label Estado de Internación*
-              select.form-select(name='estado', required)
-                option(value='Activo') Activa
-                option(value='Cancelada') Cancelada
-                option(value='Alta') Alta
+                each cama in camasDisponibles
+                  option(value=cama.id) #{cama.numero} (Hab. #{cama.habitacion})#{cama.generoCompanero ? ' - Compañero: ' + (cama.generoCompanero === 'M' ? 'Masculino' : cama.generoCompanero === 'F' ? 'Femenino' : 'Otro') : ''}
 
           .d-flex.justify-content-end.mt-4
             a.btn.btn-outline-secondary(href='/home') Cancelar
             button.btn.btn-primary.ms-2(type='submit') Registrar Paciente
 
-  block scripts
-    script.
+block scripts
+  script.
+      document.getElementById('limpiarCampos').addEventListener('click', () => {
+      const campos = [
+        'pacienteId', 'nombre', 'apellido', 'dni', 'fechaNacimiento',
+        'genero', 'telefono', 'email', 'obraSocial',
+        'contactoEmergencia', 'notas', 'emergencia', 'derivado'
+      ];
+
+      campos.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          if (el.type === 'checkbox') {
+            el.checked = false;
+          } else {
+            el.value = '';
+          }
+        }
+      });
+
+      document.getElementById('buscarDni').value = '';
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('btnBuscarPaciente').addEventListener('click', async () => {
         const dni = document.getElementById('buscarDni').value.trim();
         if (!dni) return;
+
         try {
-          const res = await fetch(`/pacientes/buscar?q=${dni}`);
+          const res = await fetch(`/pacientes/buscar?q=${dni}`, { cache: "no-store" });
+          if (!res.ok) throw new Error('Error en la respuesta del servidor');
+
           const pacientes = await res.json();
           if (pacientes.length > 0) {
             const p = pacientes[0];
-            document.getElementById('pacienteId').value = p.id;
-            document.getElementById('nombre').value = p.nombre;
-            document.getElementById('apellido').value = p.apellido;
-            document.getElementById('dni').value = p.dni;
-            document.getElementById('fechaNacimiento').value = p.fechaNacimiento;
-            document.getElementById('genero').value = p.genero;
-            document.getElementById('contacto').value = p.contacto;
-            document.getElementById('obraSocial').value = p.obraSocial;
-            document.getElementById('contactoEmergencia').value = p.contactoEmergencia;
-            document.getElementById('notas').value = p.notas;
+
+            const setVal = (id, val) => {
+              const el = document.getElementById(id);
+              if (el) el.value = val || '';
+            };
+
+            setVal('pacienteId', p.id);
+            setVal('nombre', p.nombre);
+            setVal('apellido', p.apellido);
+            setVal('dni', p.dni);
+            setVal('fechaNacimiento', p.fecha_nacimiento);
+            setVal('genero', p.sexo);
+            setVal('telefono', p.telefono);
+            setVal('email', p.email);
+            setVal('obraSocial', p.obraSocial?.id);
+            setVal('contactoEmergencia', p.contacto_emergencia);
           } else {
             alert('Paciente no encontrado');
           }
         } catch (err) {
+          console.error('Error al buscar paciente:', err);
           alert('Error al buscar paciente');
         }
       });
+    });
+

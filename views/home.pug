@@ -28,20 +28,22 @@ block content
           a.btn.btn-outline-primary(href='/habitaciones/crear') Crear Habitación
 
         .row.g-4
-          each grupo in camasPorHabitacion
-            .col-md-6.col-lg-4
-              .card.shadow.border-0.rounded-4.bg-white
-                .card-header.bg-primary.text-white.fw-semibold.text-start.rounded-top-4
-                  | 🛏️ Habitación #{grupo.habitacion} - Sector #{grupo.sector}
-                .card-body.d-flex.gap-4.flex-wrap.justify-content-center.p-4
-                  each cama in grupo.camas
-                    .text-center
-                      .cama-estado.shadow-sm.rounded-circle(style=`border: 3px solid ${cama.color}; padding: 10px; background-color: #fff`)
-                        img(src='/images/cama.png', alt='Cama', width='30', height='30')
-                      .cama-texto.mt-2.text-secondary.small
-                        strong #{cama.numero}:
-                        |  #{cama.estado} -
-                        span.badge.rounded-pill.bg-light.text-dark.ms-1 #{cama.genero === 'M' ? 'Masculino' : cama.genero === 'F' ? 'Femenino' : 'Otro'}
+          each grupo in habitaciones
+            if grupo.camas.length != 0
+              .col-md-6.col-lg-4
+                .card.shadow.border-0.rounded-4.bg-white
+                  .card-header.bg-primary.text-white.fw-semibold.text-start.rounded-top-4
+                    | 🛏️ Habitación #{grupo.numero} - Sector #{grupo.sector}
+                  .card-body.d-flex.gap-4.flex-wrap.justify-content-center.p-4
+                    each cama in grupo.camas
+                      .text-center
+                        - let borderColor = cama.estado === 'LIBRE' ? '#198754' : cama.estado === 'OCUPADA' ? '#dc3545' : '#0d6efd';
+                        .cama-estado.shadow-sm.rounded-circle(style=`border: 3px solid ${borderColor}; padding: 10px; background-color: #fff`)
+                          img(src='/images/cama.png', alt='Cama', width='30', height='30')
+                        .cama-texto.mt-2.text-secondary.small
+                          strong #{cama.numero}:
+                          |  #{cama.estado} -
+                          span.badge.rounded-pill.bg-light.text-dark.ms-1 #{cama.genero === 'M' ? 'Masculino' : cama.genero === 'F' ? 'Femenino' : 'Otro'}
 
 block scripts
   link(rel='stylesheet', href='/stylesheets/home.css')

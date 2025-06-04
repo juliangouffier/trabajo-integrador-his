@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Cama.associate = models => {
     Cama.belongsTo(models.Habitacion, { foreignKey: 'habitacion_id' });
+    Cama.hasMany(models.Admision, {foreignKey: 'cama_id', as: 'admisiones'});
   };
   return Cama;
 };

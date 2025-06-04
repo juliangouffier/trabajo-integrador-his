@@ -20,8 +20,9 @@ const Sector = require('./sector')(db, DataTypes);
 const Habitacion = require('./Habitacion')(db, DataTypes);
 const Cama = require('./Cama')(db, DataTypes);
 const Admision = require('./Admision')(db, DataTypes);
+const ObraSocial = require('./ObraSocial')(db, DataTypes);
 
-const models = { Usuario, Personal, Paciente, Habitacion, Sector, Cama, Admision };
+const models = { Usuario, Personal, Paciente, Habitacion, Sector, Cama, Admision, ObraSocial };
 Object.values(models).forEach(model => {
   if (typeof model.associate === 'function') {
     model.associate(models);
