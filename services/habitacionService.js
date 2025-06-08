@@ -28,7 +28,7 @@ return habitaciones.map(h => ({
   camas: h.Camas.map(c => ({
     numero: c.numero,
     estado: c.estado,
-    genero: c.admisiones?.[0]?.Paciente?.sexo || 'No se pudo traer el sexo',
+    genero: c.admisiones?.[0]?.Paciente?.sexo || '',
     paciente: c.admisiones?.[0]?.Paciente?.nombre || null
   }))
 }));

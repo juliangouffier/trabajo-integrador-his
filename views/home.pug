@@ -43,7 +43,7 @@ block content
                         .cama-texto.mt-2.text-secondary.small
                           strong #{cama.numero}:
                           |  #{cama.estado} -
-                          span.badge.rounded-pill.bg-light.text-dark.ms-1 #{cama.genero === 'M' ? 'Masculino' : cama.genero === 'F' ? 'Femenino' : 'Otro'}
+                          span.badge.rounded-pill.bg-light.text-dark.ms-1 #{cama.genero === 'M' ? 'Masculino' : cama.genero === 'F' ? 'Femenino' : ''}
 
 block scripts
   link(rel='stylesheet', href='/stylesheets/home.css')

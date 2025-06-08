@@ -16,10 +16,6 @@ module.exports = (sequelize, DataTypes) => {
     llegada_emergencia: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
-    },
-    paciente_derivado: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
     }
   }, {
     tableName: 'admision',
@@ -30,6 +26,16 @@ module.exports = (sequelize, DataTypes) => {
     Admision.belongsTo(models.Paciente, { foreignKey: 'paciente_id' });
     Admision.belongsTo(models.Cama, { foreignKey: 'cama_id' });
   };
+
+  Admision.afterCreate(async (admision, options) => {
+    if (admision.cama_id) {
+      const { Cama } = sequelize.models;
+      await Cama.update(
+        { estado: 'OCUPADA' },
+        { where: { id: admision.cama_id } }
+      );
+    }
+  });
 
   return Admision;
 };

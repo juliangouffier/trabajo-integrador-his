@@ -3,6 +3,8 @@ extends layout
 block content
   .container.mt-5
     h2.text-dark.mb-4 Admisión de Pacientes
+    if error
+      .alert.alert-danger= error
 
     .card.shadow-sm.border-0.p-4
       .card-body
@@ -14,67 +16,72 @@ block content
             button.btn.btn-outline-danger(type='button', id='limpiarCampos') Limpiar
 
         form(id='form-admision', action='/admisiones/registro', method='POST')
-          input(type='hidden', name='pacienteId', id='pacienteId')
+          input(type='hidden', name='pacienteId', id='pacienteId', value=(formData && formData.pacienteId) || '')
 
           .row.mb-3
             .col-md-6
               label.form-label Nombre(s)*
-              input.form-control(type='text', name='nombre', id='nombre', required)
+              input.form-control(type='text', name='nombre', id='nombre', required, value=(formData && formData.nombre) || '')
             .col-md-6
               label.form-label Apellido(s)*
-              input.form-control(type='text', name='apellido', id='apellido', required)
+              input.form-control(type='text', name='apellido', id='apellido', required, value=(formData && formData.apellido) || '')
+
+          .row.mb-3
+            .col-md-12
+              label.form-label Dirección*
+              input.form-control(type='text', name='direccion', id='direccion', required, value=(formData && formData.direccion) || '')
 
           .row.mb-3
             .col-md-4
               label.form-label Fecha de Nacimiento*
-              input.form-control(type='date', name='fechaNacimiento', id='fechaNacimiento', required)
+              input.form-control(type='date', name='fechaNacimiento', id='fechaNacimiento', required, value=(formData && formData.fechaNacimiento) || '')
             .col-md-4
               label.form-label Género*
               select.form-select(name='genero', id='genero', required)
                 option(value='') Seleccionar
-                option(value='M') Masculino
-                option(value='F') Femenino
+                option(value='M', selected=(formData && formData.genero === 'M')) Masculino
+                option(value='F', selected=(formData && formData.genero === 'F')) Femenino
             .col-md-4
               label.form-label Documento*
-              input.form-control(type='text', name='dni', id='dni', required)
+              input.form-control(type='text', name='dni', id='dni', required, value=(formData && formData.dni) || '')
 
           .row.mb-3
             .col-md-6
               label.form-label Teléfono
-              input.form-control(type='text', name='telefono', id='telefono')
+              input.form-control(type='text', name='telefono', id='telefono', value=(formData && formData.telefono) || '')
             .col-md-6
               label.form-label Email
-              input.form-control(type='text', name='email', id='email')
+              input.form-control(type='text', name='email', id='email', value=(formData && formData.email) || '')
             .col-md-6
               label.form-label Obra Social
               select.form-select(name='obraSocial', id='obraSocial')
                 option(value='') Sin obra social
                 each obra in obrasSociales
-                  option(value=obra.id)= obra.nombre
+                  option(value=obra.id, selected=(formData && formData.obraSocial == obra.id))= obra.nombre
 
           .row.mb-3
             .col-md-6
               label.form-label Telefono de Emergencia
-              input.form-control(type='text', name='contactoEmergencia', id='contactoEmergencia')
+              input.form-control(type='text', name='contactoEmergencia', id='contactoEmergencia', value=(formData && formData.contactoEmergencia) || '')
             .col-md-6
               label.form-label Notas Adicionales
-              textarea.form-control(name='notas', id='notas')
+              textarea.form-control(name='notas', id='notas')= (formData && formData.notas) || ''
 
           .row.mb-3
             .col-md-6.form-check
-              input.form-check-input(type='checkbox', id='emergencia', name='emergencia')
+              input.form-check-input(type='checkbox', id='emergencia', name='emergencia', checked=(formData && formData.emergencia))
               label.form-check-label(for='emergencia') Llegada por Emergencia
             .col-md-6.form-check
-              input.form-check-input(type='checkbox', id='derivado', name='derivado')
-              label.form-check-label(for='derivado') Paciente Derivado
+              input.form-check-input(type='checkbox', id='derivado', name='derivado', checked=(formData && formData.derivado))
+              label.form-check-label(for='derivado') Paciente Derivado Guardia
 
           .row.mb-3
             .col-md-6
               label.form-label Fecha de Ingreso*
-              input.form-control(type='date', name='fechaIngreso', required)
+              input.form-control(type='date', name='fechaIngreso', required, value=(formData && formData.fechaIngreso) || '')
             .col-md-6
               label.form-label Motivo de Internación*
-              input.form-control(type='text', name='motivo', required)
+              input.form-control(type='text', name='motivo', required, value=(formData && formData.motivo) || '')
 
           .row.mb-3
             .col-md-6
@@ -82,7 +89,7 @@ block content
               select.form-select(name='cama', required)
                 option(value='') Seleccione una cama disponible
                 each cama in camasDisponibles
-                  option(value=cama.id) #{cama.numero} (Hab. #{cama.habitacion})#{cama.generoCompanero ? ' - Compañero: ' + (cama.generoCompanero === 'M' ? 'Masculino' : cama.generoCompanero === 'F' ? 'Femenino' : 'Otro') : ''}
+                  option(value=cama.id, selected=(formData && formData.cama == cama.id)) #{cama.numero} (Hab. #{cama.habitacion})#{cama.generoCompanero ? ' - Compañero: ' + (cama.generoCompanero === 'M' ? 'Masculino' : cama.generoCompanero === 'F' ? 'Femenino' : '') : ''}
 
           .d-flex.justify-content-end.mt-4
             a.btn.btn-outline-secondary(href='/home') Cancelar
@@ -90,11 +97,11 @@ block content
 
 block scripts
   script.
-      document.getElementById('limpiarCampos').addEventListener('click', () => {
+    document.getElementById('limpiarCampos').addEventListener('click', () => {
       const campos = [
         'pacienteId', 'nombre', 'apellido', 'dni', 'fechaNacimiento',
         'genero', 'telefono', 'email', 'obraSocial',
-        'contactoEmergencia', 'notas', 'emergencia', 'derivado'
+        'direccion', 'contactoEmergencia', 'notas', 'emergencia', 'derivado'
       ];
 
       campos.forEach(id => {
@@ -138,6 +145,7 @@ block scripts
             setVal('telefono', p.telefono);
             setVal('email', p.email);
             setVal('obraSocial', p.obraSocial?.id);
+            setVal('direccion', p.direccion);
             setVal('contactoEmergencia', p.contacto_emergencia);
           } else {
             alert('Paciente no encontrado');
@@ -148,4 +156,3 @@ block scripts
         }
       });
     });
-
