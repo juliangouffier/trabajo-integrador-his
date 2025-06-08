@@ -12,6 +12,14 @@ module.exports = (sequelize, DataTypes) => {
     derivado_guardia: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
+    },
+    llegada_emergencia: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    paciente_derivado: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {
     tableName: 'admision',

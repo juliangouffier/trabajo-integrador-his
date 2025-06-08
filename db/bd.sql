@@ -108,3 +108,6 @@ ADD FOREIGN KEY (obra_social_id) REFERENCES obra_social(id);
 ALTER TABLE paciente
 ADD COLUMN email VARCHAR(100);
 
+ALTER TABLE admision
+ADD COLUMN llegada_emergencia BOOLEAN DEFAULT FALSE,
+ADD COLUMN paciente_derivado BOOLEAN DEFAULT FALSE;
