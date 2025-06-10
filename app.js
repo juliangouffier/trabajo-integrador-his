@@ -27,12 +27,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', authRouter);
 app.use('/', indexRouter);
-app.use('/sectores', sectorRouter);
+app.use('/', sectorRouter);
 app.use('/', internacionRouter);
 app.use('/camas', camaRouter);
 //app.use('/home', indexRouter);
 app.use('/', pacientesRouter);
 app.use('/', admisionesRouter);
+app.use('/', habitacionRouter);
 
 /*app.use(function(req, res, next) {
   next(createError(404));

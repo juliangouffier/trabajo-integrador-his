@@ -34,4 +34,25 @@ return habitaciones.map(h => ({
 }));
 }
 
-module.exports = { obtenerHabitacionesConCamas };
+async function crearHabitacion({ numero, sector_id, camas }) {
+  const sector = await Sector.findByPk(sector_id);
+  if (!sector) throw new Error('Sector no encontrado');
+
+  const existe = await Habitacion.findOne({
+    where: { numero, sector_id }
+  });
+  if (existe) throw new Error('Ya existe una habitación con ese número en el sector seleccionado');
+
+  const habitacion = await Habitacion.create({ numero, sector_id });
+  
+  for (const numeroCama of camas) {
+    await Cama.create({
+      numero: numeroCama,
+      estado: 'LIBRE',
+      habitacion_id: habitacion.id
+    });
+  }
+
+  return habitacion;
+}
+module.exports = { obtenerHabitacionesConCamas, crearHabitacion  };

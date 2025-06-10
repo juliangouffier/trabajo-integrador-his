@@ -1,4 +1,5 @@
 const { obtenerHabitacionesConCamas } = require('../services/habitacionService');
+const { obtenerTodosLosSectores } = require('../services/sectorService');
 
 const quickAccess = [
   { title: 'Pacientes', link: '/pacientes', icon: 'bi bi-people' },
@@ -15,11 +16,13 @@ const items = [
 async function renderHome(req, res) {
   try {
     const habitaciones = await obtenerHabitacionesConCamas();
+    
     res.render('home', {
       title: 'Sistema de Información Hospitalaria',
       items,
       quickAccess,
-      habitaciones
+      habitaciones,
+      sectores: await obtenerTodosLosSectores()
     });
   } catch (error) {
     console.error(error);
@@ -27,4 +30,4 @@ async function renderHome(req, res) {
   }
 }
 
-module.exports = { renderHome };
+module.exports = { renderHome, items, quickAccess };

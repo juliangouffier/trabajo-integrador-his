@@ -8,13 +8,11 @@ block content
           img(src='/images/logo.png', alt='Logo', width='60')
           h5.mt-2.text-dark HOSPITAL
           small.text-secondary INFORMATION SYSTEM
-
         .nav.flex-column.mt-4
           each item in items
             a.nav-link.py-3.d-flex.align-items-center.gap-2(href=item.link)
               i(class=item.icon style='font-size: 1.2rem; color: #0d6efd;')
               span= item.title
-
         hr
         .nav.flex-column
           each quick in quickAccess
@@ -25,7 +23,7 @@ block content
       .col-md-10.p-4.bg-light.min-vh-100
         .d-flex.justify-content-between.align-items-center.mb-4
           h4.text-primary.fw-bold.mb-0 Visualización de Camas por Habitación
-          a.btn.btn-outline-primary(href='/habitaciones/crear') Crear Habitación
+          button.btn.btn-outline-primary#btnAbrirModalHabitacion(type='button', data-bs-toggle='modal', data-bs-target='#modalCrearHabitacion') Crear Habitación
 
         .row.g-4
           each grupo in habitaciones
@@ -33,7 +31,7 @@ block content
               .col-md-6.col-lg-4
                 .card.shadow.border-0.rounded-4.bg-white
                   .card-header.bg-primary.text-white.fw-semibold.text-start.rounded-top-4
-                    | 🛏️ Habitación #{grupo.numero} - Sector #{grupo.sector}
+                    | 🛎️ Habitación #{grupo.numero} - Sector #{grupo.sector}
                   .card-body.d-flex.gap-4.flex-wrap.justify-content-center.p-4
                     each cama in grupo.camas
                       .text-center
@@ -45,5 +43,82 @@ block content
                           |  #{cama.estado} -
                           span.badge.rounded-pill.bg-light.text-dark.ms-1 #{cama.genero === 'M' ? 'Masculino' : cama.genero === 'F' ? 'Femenino' : ''}
 
+  .modal.fade#modalCrearHabitacion(tabindex='-1')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          h5.modal-title Crear Nueva Habitación
+          button.btn-close(type='button', data-bs-dismiss='modal')
+        .modal-body
+          if errorCrearHabitacion
+            .alert.alert-danger= errorCrearHabitacion
+          form(action='/habitaciones/crear', method='POST', id='formCrearHabitacion')
+            .mb-3
+              label.form-label Número o nombre de habitación
+              input.form-control(type='text', name='numero', required, value=formHabitacion && formHabitacion.numero || '')
+            .mb-3
+              label.form-label Sector
+              select.form-select(name='sector_id', id='sectorSelect', required)
+                option(value='') Seleccione un sector
+                each s in sectores
+                  option(value=s.id selected=(formHabitacion && formHabitacion.sector_id == s.id))= s.nombre
+            .mb-3
+              label.form-label Cantidad de camas
+              select.form-select(name='cantidad_camas', id='selectCantidadCamas', required)
+                option(value='') Seleccione
+                option(value='1' selected=(formHabitacion && formHabitacion.cantidad_camas == '1')) 1 cama
+                option(value='2' selected=(formHabitacion && formHabitacion.cantidad_camas == '2')) 2 camas
+            .mb-3#contenedorCamas(style='display:none')
+            .d-flex.justify-content-end
+              button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancelar
+              button.btn.btn-primary.ms-2(type='submit') Crear
+
 block scripts
   link(rel='stylesheet', href='/stylesheets/home.css')
+  script.
+    document.getElementById('btnAbrirModalHabitacion').addEventListener('click', async () => {
+      const select = document.getElementById('sectorSelect');
+      if (!select || select.options.length > 1) return;
+      select.innerHTML = '<option value="">Cargando...</option>';
+      try {
+        const res = await fetch('/sectores');
+        const sectores = await res.json();
+        select.innerHTML = '<option value="">Seleccione un sector</option>';
+        sectores.forEach(s => {
+          const opt = document.createElement('option');
+          opt.value = s.id;
+          opt.textContent = s.nombre;
+          select.appendChild(opt);
+        });
+      } catch (err) {
+        console.error('Error al cargar sectores:', err);
+        select.innerHTML = '<option value="">Error al cargar</option>';
+      }
+    });
+
+    document.getElementById('selectCantidadCamas').addEventListener('change', function () {
+      const contenedor = document.getElementById('contenedorCamas');
+      contenedor.innerHTML = '';
+      const cantidad = parseInt(this.value);
+      if (!cantidad || cantidad < 1) {
+        contenedor.style.display = 'none';
+        return;
+      }
+      for (let i = 1; i <= cantidad; i++) {
+        const div = document.createElement('div');
+        div.classList.add('mb-3');
+        div.innerHTML = `
+          <label class="form-label">Número para la cama ${i}</label>
+          <input class="form-control" type="number" name="numero_cama_${i}" required min="1" pattern="^[0-9]+$" title="Solo se permiten números">
+        `;
+        contenedor.appendChild(div);
+      }
+      contenedor.style.display = 'block';
+    });
+
+  if abrirModalHabitacion
+    script.
+      document.addEventListener('DOMContentLoaded', function () {
+        const modal = new bootstrap.Modal(document.getElementById('modalCrearHabitacion'));
+        modal.show();
+      });

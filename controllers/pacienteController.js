@@ -22,7 +22,6 @@ async function buscar(req, res) {
   }
 }
 
-
 module.exports = {
   predictDni,
   buscar
