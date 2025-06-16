@@ -1,6 +1,38 @@
+const { Habitacion, Sector } = require('../models');
 const { crearHabitacion, obtenerHabitacionesConCamas } = require('../services/habitacionService');
 const { items, quickAccess } = require('./homeController');
 const { obtenerTodosLosSectores } = require('../services/sectorService');
+
+async function vistaHabitaciones(req, res, next) {
+  try {
+    const listaHab = await Habitacion.findAll({
+      include: [{
+        model: Sector,
+        as: 'Sector',
+        attributes: ['nombre']
+      }]
+    });
+
+    const listaSectores = await Sector.findAll();
+
+    const habitaciones = listaHab.map(h => ({
+      id: h.id,
+      numero: h.numero,
+      estado: h.estado,
+      camas: h.camas,
+      tipo: h.tipo,
+      sector: h.Sector ? h.Sector.nombre : 'Sin sector'
+    }));
+
+    res.render('habitaciones', {
+      title: 'Gestión de Habitaciones',
+      habitaciones,
+      sectores: listaSectores
+    });
+  } catch (err) {
+    next(err);
+  }
+}
 
 async function crearHabitacionEP(req, res, next) {
   try {
@@ -18,17 +50,19 @@ async function crearHabitacionEP(req, res, next) {
   } catch (err) {
     console.error('Error al crear habitación:', err.message);
     res.render('home', {
-        errorGlobal: err.message,
-        errorCrearHabitacion: err.message,
-        habitaciones: await obtenerHabitacionesConCamas(),
-        items,
-        formHabitacion: req.body,
-        quickAccess,
-        abrirModalHabitacion: true,
-        sectores: await obtenerTodosLosSectores()
+      errorGlobal: err.message,
+      errorCrearHabitacion: err.message,
+      habitaciones: await obtenerHabitacionesConCamas(),
+      items,
+      formHabitacion: req.body,
+      quickAccess,
+      abrirModalHabitacion: true,
+      sectores: await obtenerTodosLosSectores()
     });
-
   }
 }
 
-module.exports = { crearHabitacionEP };
+module.exports = {
+  vistaHabitaciones,
+  crearHabitacionEP
+};
