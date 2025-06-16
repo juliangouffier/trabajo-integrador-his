@@ -67,7 +67,7 @@ CREATE TABLE evaluacion_enfermeria (
     enfermero_id INT NOT NULL,
     historial_medico TEXT,
     sintomas TEXT,
-    fecha DATETIME DEFAULT NOW(),
+    fecha DATETIME,
     FOREIGN KEY (admision_id) REFERENCES admision(id),
     FOREIGN KEY (enfermero_id) REFERENCES personal(id)
 );
@@ -79,7 +79,7 @@ CREATE TABLE signos_vitales (
     frecuencia_cardiaca INT,
     frecuencia_respiratoria INT,
     temperatura DECIMAL(4,2),
-    fecha DATETIME DEFAULT NOW(),
+    fecha DATETIME,
     FOREIGN KEY (evaluacion_id) REFERENCES evaluacion_enfermeria(id)
 );
 
@@ -89,7 +89,7 @@ CREATE TABLE evaluacion_medica (
     medico_id INT NOT NULL,
     diagnostico TEXT,
     tratamiento TEXT,
-    fecha DATETIME DEFAULT NOW(),
+    fecha DATETIME,
     FOREIGN KEY (admision_id) REFERENCES admision(id),
     FOREIGN KEY (medico_id) REFERENCES personal(id)
 );

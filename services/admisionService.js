@@ -1,4 +1,4 @@
-const { ObraSocial, Cama, Habitacion, Admision, Paciente } = require('../models');
+const { ObraSocial, Cama, Habitacion, Admision, Paciente, Sector } = require('../models');
 const { Op } = require('sequelize');
 
 async function obtenerObrasSociales() {
@@ -12,6 +12,10 @@ async function obtenerCamasDisponiblesConContexto() {
       {
         model: Habitacion,
         include: [
+          {
+            model: Sector,
+            attributes: ['id', 'nombre']
+          },
           {
             model: Cama,
             where: { estado: 'OCUPADA' },
@@ -34,9 +38,9 @@ async function obtenerCamasDisponiblesConContexto() {
       }
     ]
   });
-
   return camasLibres.map(cama => {
     const habitacion = cama.Habitacion;
+    const sector = habitacion?.Sector;
     const camasOcupadas = habitacion?.Camas?.filter(c => c.id !== cama.id && c.estado === 'OCUPADA');
     const generoOcupante = camasOcupadas?.[0]?.Admisions?.[0]?.Paciente?.sexo || null;
 
@@ -44,10 +48,12 @@ async function obtenerCamasDisponiblesConContexto() {
       id: cama.id,
       numero: cama.numero,
       habitacion: habitacion.numero,
+      sector: sector?.nombre || 'Sin sector',
       generoCompanero: generoOcupante
     };
   });
 }
+
 
 async function crearAdmision({ pacienteId, paciente, admision }) {
   console.log("CREANDO ADMISION");

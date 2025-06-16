@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Cama, Habitacion, Sector, Admision, Paciente } = require('../models');
 const requireAuth = require('../middleware/authMiddleware');
-
+/*
 router.get('/internaciones', requireAuth, async (req, res, next) => {
   try {
     const camas = await Cama.findAll({
@@ -36,6 +36,6 @@ router.get('/internaciones', requireAuth, async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
+});*/
 
 module.exports = router;

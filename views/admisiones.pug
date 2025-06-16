@@ -97,7 +97,7 @@ block content
               select.form-select(name='cama', required)
                 option(value='') Seleccione una cama disponible
                 each cama in camasDisponibles
-                  option(value=cama.id, selected=(formData && formData.cama == cama.id)) #{cama.numero} (Hab. #{cama.habitacion})#{cama.generoCompanero ? ' - Compañero: ' + (cama.generoCompanero === 'M' ? 'Masculino' : cama.generoCompanero === 'F' ? 'Femenino' : '') : ''}
+                  option(value=cama.id, selected=(formData && formData.cama == cama.id)) #{cama.numero} (Hab. #{cama.habitacion}, Sector: #{cama.sector})#{cama.generoCompanero ? ' - Compañero: ' + (cama.generoCompanero === 'M' ? 'Masculino' : cama.generoCompanero === 'F' ? 'Femenino' : '') : ''}
 
           .d-flex.justify-content-end.mt-4
             a.btn.btn-outline-secondary(href='/home') Cancelar
