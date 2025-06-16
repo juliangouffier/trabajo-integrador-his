@@ -8,6 +8,9 @@ Proyecto desarrollado para la materia **Programación Web 2**, que simula un sis
 
 👉 [Link a la demo desplegada en Railway](https://trabajo-integrador-his.onrender.com/)  
 
+Usuarios: `mgonzalez`, `cfernandez`, `alopez`
+Password: `xxx`
+
 ---
 
 ## 🛠️ Tecnologías
