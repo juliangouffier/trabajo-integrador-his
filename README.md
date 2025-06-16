@@ -6,7 +6,7 @@ Proyecto desarrollado para la materia **Programación Web 2**, que simula un sis
 
 ## 🔗 URL DEMO
 
-👉 [Link a la demo desplegada en Railway](#)  
+👉 [Link a la demo desplegada en Railway](https://trabajo-integrador-his.onrender.com/)  
 
 ---
 
@@ -16,7 +16,7 @@ Proyecto desarrollado para la materia **Programación Web 2**, que simula un sis
 - Pug (Motor de plantillas)
 - Sequelize ORM
 - MySQL (Base de datos)
-- Railway (Deploy en la nube)
+- Render (Deploy en la nube)
 - Bootstrap 5 (Frontend)
 
 ---
@@ -41,4 +41,5 @@ Proyecto desarrollado para la materia **Programación Web 2**, que simula un sis
 - `views/`: vistas del sistema usando Pug.
 - `services/`: Aplica la lógica de negocio (validaciones, reglas, flujos)
 
-
+## ⚙️ Ajustes
+- `.ENV` configuracionde PUERTO y JWT KEY
