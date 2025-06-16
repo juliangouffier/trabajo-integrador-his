@@ -2,9 +2,9 @@ const { obtenerHabitacionesConCamas } = require('../services/habitacionService')
 const { obtenerTodosLosSectores } = require('../services/sectorService');
 
 const quickAccess = [
-  { title: 'Pacientes', link: '/pacientes', icon: 'bi bi-people' },
-  { title: 'Citas', link: '/citas', icon: 'bi bi-calendar2-week' },
-  { title: 'Reportes', link: '/reportes', icon: 'bi bi-bar-chart' }
+  { title: 'Pacientes', link: '#', icon: 'bi bi-people' },
+  { title: 'Citas', link: '#', icon: 'bi bi-calendar2-week' },
+  { title: 'Reportes', link: '#', icon: 'bi bi-bar-chart' }
 ];
 
 const items = [
