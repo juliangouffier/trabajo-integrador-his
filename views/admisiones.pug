@@ -68,12 +68,13 @@ block content
               textarea.form-control(name='notas', id='notas')= (formData && formData.notas) || ''
 
           .row.mb-3
-            .col-md-6.form-check
-              input.form-check-input(type='checkbox', id='emergencia', name='emergencia', checked=(formData && formData.emergencia))
-              label.form-check-label(for='emergencia') Llegada por Emergencia
-            .col-md-6.form-check
-              input.form-check-input(type='checkbox', id='derivado', name='derivado', checked=(formData && formData.derivado))
-              label.form-check-label(for='derivado') Paciente Derivado Guardia
+            .col-md-6
+              label.form-label Vía de Ingreso*
+              select.form-select(name='tipo_ingreso', required)
+                option(value='CITA_PROGRAMADA' selected=(formData && formData.tipo_ingreso === 'CITA_PROGRAMADA')) Cita Programada
+                option(value='DERIVADO' selected=(formData && formData.tipo_ingreso === 'DERIVADO')) Derivado Médico
+                option(value='EMERGENCIA' selected=(formData && formData.tipo_ingreso === 'EMERGENCIA')) Emergencia
+
 
           .row.mb-3
             .col-md-6
@@ -97,18 +98,19 @@ block content
 
 block scripts
   script.
-    function toggleCamposPacientePorEmergencia(checked) {
+    function toggleCamposPacientePorEmergencia(tipoIngreso) {
+      const esEmergencia = tipoIngreso === 'EMERGENCIA';
       const campos = [
         'nombre', 'apellido', 'dni', 'fechaNacimiento',
         'genero', 'telefono', 'email', 'obraSocial',
-        'direccion', 'contactoEmergencia', 'notas','pacienteId'
+        'direccion', 'contactoEmergencia', 'notas', 'pacienteId'
       ];
 
       campos.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-          el.disabled = checked;
-          if (checked) {
+          el.disabled = esEmergencia;
+          if (esEmergencia) {
             if (el.tagName === 'SELECT') {
               el.selectedIndex = 0;
             } else {
@@ -120,36 +122,13 @@ block scripts
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      const emergenciaCheck = document.getElementById('emergencia');
-      toggleCamposPacientePorEmergencia(emergenciaCheck.checked);
+      const tipoIngresoSelect = document.querySelector('select[name="tipo_ingreso"]');
+      toggleCamposPacientePorEmergencia(tipoIngresoSelect.value);
 
-      emergenciaCheck.addEventListener('change', function () {
-        toggleCamposPacientePorEmergencia(this.checked);
-      });
-    });
-
-    document.getElementById('limpiarCampos').addEventListener('click', () => {
-      const campos = [
-        'pacienteId', 'nombre', 'apellido', 'dni', 'fechaNacimiento',
-        'genero', 'telefono', 'email', 'obraSocial',
-        'direccion', 'contactoEmergencia', 'notas', 'emergencia', 'derivado'
-      ];
-
-      campos.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          if (el.type === 'checkbox') {
-            el.checked = false;
-          } else {
-            el.value = '';
-          }
-        }
+      tipoIngresoSelect.addEventListener('change', function () {
+        toggleCamposPacientePorEmergencia(this.value);
       });
 
-      document.getElementById('buscarDni').value = '';
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('btnBuscarPaciente').addEventListener('click', async () => {
         const dni = document.getElementById('buscarDni').value.trim();
         if (!dni) return;
@@ -186,4 +165,26 @@ block scripts
           alert('Error al buscar paciente');
         }
       });
+
+      document.getElementById('limpiarCampos').addEventListener('click', () => {
+        const campos = [
+          'pacienteId', 'nombre', 'apellido', 'dni', 'fechaNacimiento',
+          'genero', 'telefono', 'email', 'obraSocial',
+          'direccion', 'contactoEmergencia', 'notas'
+        ];
+
+        campos.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            if (el.type === 'checkbox') {
+              el.checked = false;
+            } else {
+              el.value = '';
+            }
+          }
+        });
+
+        document.getElementById('buscarDni').value = '';
+      });
     });
+

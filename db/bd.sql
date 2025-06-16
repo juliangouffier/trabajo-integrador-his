@@ -37,7 +37,6 @@ CREATE TABLE admision (
     motivo TEXT,
     cama_id INT,
     estado ENUM('ACTIVA', 'CANCELADA', 'ALTA') DEFAULT 'ACTIVA',
-    derivado_guardia BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (paciente_id) REFERENCES paciente(id),
     FOREIGN KEY (cama_id) REFERENCES cama(id)
 );
@@ -109,4 +108,5 @@ ALTER TABLE paciente
 ADD COLUMN email VARCHAR(100);
 
 ALTER TABLE admision
-ADD COLUMN llegada_emergencia BOOLEAN DEFAULT FALSE;
+ADD COLUMN tipo_ingreso ENUM('CITA_PROGRAMADA', 'DERIVADO', 'EMERGENCIA') NOT NULL DEFAULT 'CITA_PROGRAMADA';
+

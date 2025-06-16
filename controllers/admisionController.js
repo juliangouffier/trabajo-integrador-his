@@ -35,8 +35,7 @@ async function crearAdmisionEP(req, res, next) {
         fecha_ingreso: req.body.fechaIngreso,
         motivo: req.body.motivo,
         cama_id: parseInt(req.body.cama, 10) || null,
-        llegada_emergencia: req.body.emergencia === 'on',
-        derivado_guardia: req.body.derivado === 'on'
+        tipo_ingreso: req.body.tipo_ingreso
       }
     };
 

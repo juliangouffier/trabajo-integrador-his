@@ -9,14 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM('ACTIVA', 'CANCELADA', 'ALTA'),
       defaultValue: 'ACTIVA'
     },
-    derivado_guardia: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    },
-    llegada_emergencia: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
-    }
+    tipo_ingreso: {
+    type: DataTypes.ENUM('CITA_PROGRAMADA', 'DERIVADO', 'EMERGENCIA'),
+    allowNull: false,
+    defaultValue: 'CITA_PROGRAMADA'
+  },
   }, {
     tableName: 'admision',
     timestamps: false

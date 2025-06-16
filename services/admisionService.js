@@ -51,8 +51,8 @@ async function obtenerCamasDisponiblesConContexto() {
 
 async function crearAdmision({ pacienteId, paciente, admision }) {
   console.log("CREANDO ADMISION");
-  if(admision.llegada_emergencia){
-    if (admision.llegada_emergencia && !paciente.dni) {
+  if (admision.tipo_ingreso === 'EMERGENCIA') {
+    if (!paciente.dni) {
         paciente = {
           nombre: 'Paciente de Emergencia',
           apellido: 'Sin Datos',
@@ -68,9 +68,9 @@ async function crearAdmision({ pacienteId, paciente, admision }) {
         };
     }
   }
-  console.log(paciente)
+  console.log(admision.tipo_ingreso)
   if (!paciente) throw new Error('Datos del paciente no provistos');
-  validarCamposObligatoriosPaciente(paciente, admision.llegada_emergencia);
+  validarCamposObligatoriosPaciente(paciente, admision.tipo_ingreso === 'EMERGENCIA' ? true : false);
 
   let pacienteDbId = pacienteId;
 
