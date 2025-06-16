@@ -79,7 +79,14 @@ block content
           .row.mb-3
             .col-md-6
               label.form-label Fecha de Ingreso*
-              input.form-control(type='date', name='fechaIngreso', required, value=(formData && formData.fechaIngreso) || '')
+              input.form-control(
+                type='datetime-local',
+                name='fechaIngreso',
+                id='fechaIngreso',
+                required,
+                value=(formData && formData.fechaIngreso) || ''
+              )
+
             .col-md-6
               label.form-label Motivo de Internación*
               input.form-control(type='text', name='motivo', required, value=(formData && formData.motivo) || '')
@@ -102,7 +109,7 @@ block scripts
       const esEmergencia = tipoIngreso === 'EMERGENCIA';
       const campos = [
         'nombre', 'apellido', 'dni', 'fechaNacimiento',
-        'genero', 'telefono', 'email', 'obraSocial',
+         'telefono', 'email', 'obraSocial',
         'direccion', 'contactoEmergencia', 'notas', 'pacienteId'
       ];
 

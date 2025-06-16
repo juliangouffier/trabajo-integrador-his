@@ -23,7 +23,7 @@ CREATE TABLE paciente (
     dni VARCHAR(20) UNIQUE NOT NULL,
     nombre VARCHAR(100),
     apellido VARCHAR(100),
-    sexo ENUM('M', 'F', 'E'),
+    sexo ENUM('M', 'F'),
     fecha_nacimiento DATE,
     direccion TEXT,
     telefono VARCHAR(20),

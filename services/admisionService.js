@@ -57,7 +57,7 @@ async function crearAdmision({ pacienteId, paciente, admision }) {
           nombre: 'Paciente de Emergencia',
           apellido: 'Sin Datos',
           dni: `EMERG-${Date.now()}`, 
-          sexo: 'E',
+          sexo: paciente.sexo,
           fecha_nacimiento: new Date(0),
           contacto: '',
           contactoEmergencia: '',
@@ -132,7 +132,7 @@ async function crearAdmision({ pacienteId, paciente, admision }) {
 function validarCamposObligatoriosPaciente(paciente, emergencia) {
   let camposObligatorios = [];
   if(emergencia){
-    camposObligatorios = [];
+    camposObligatorios = ['sexo'];
   } else {
     camposObligatorios = [
       'dni', 'nombre', 'apellido', 'sexo',
