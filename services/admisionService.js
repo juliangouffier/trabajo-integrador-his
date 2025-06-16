@@ -51,9 +51,26 @@ async function obtenerCamasDisponiblesConContexto() {
 
 async function crearAdmision({ pacienteId, paciente, admision }) {
   console.log("CREANDO ADMISION");
-
+  if(admision.llegada_emergencia){
+    if (admision.llegada_emergencia && !paciente.dni) {
+        paciente = {
+          nombre: 'Paciente de Emergencia',
+          apellido: 'Sin Datos',
+          dni: `EMERG-${Date.now()}`, 
+          sexo: 'E',
+          fecha_nacimiento: new Date(0),
+          contacto: '',
+          contactoEmergencia: '',
+          direccion: '',
+          email: '',
+          telefono: '',
+          notas: 'Paciente ingresado por emergencia. Datos incompletos.'
+        };
+    }
+  }
+  console.log(paciente)
   if (!paciente) throw new Error('Datos del paciente no provistos');
-  validarCamposObligatoriosPaciente(paciente);
+  validarCamposObligatoriosPaciente(paciente, admision.llegada_emergencia);
 
   let pacienteDbId = pacienteId;
 
@@ -112,11 +129,17 @@ async function crearAdmision({ pacienteId, paciente, admision }) {
   return nuevaAdmision;
 }
 
-function validarCamposObligatoriosPaciente(paciente) {
-  const camposObligatorios = [
-    'dni', 'nombre', 'apellido', 'sexo',
-    'fecha_nacimiento', 'direccion', 'email', 'telefono'
-  ];
+function validarCamposObligatoriosPaciente(paciente, emergencia) {
+  let camposObligatorios = [];
+  if(emergencia){
+    camposObligatorios = [];
+  } else {
+    camposObligatorios = [
+      'dni', 'nombre', 'apellido', 'sexo',
+      'fecha_nacimiento', 'direccion', 'email', 'telefono'
+    ];
+  }
+
 
   const faltantes = camposObligatorios.filter(campo => !paciente[campo]);
   if (faltantes.length > 0) {

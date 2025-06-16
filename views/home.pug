@@ -41,7 +41,15 @@ block content
                         .cama-texto.mt-2.text-secondary.small
                           strong #{cama.numero}:
                           |  #{cama.estado} -
-                          span.badge.rounded-pill.bg-light.text-dark.ms-1 #{cama.genero === 'M' ? 'Masculino' : cama.genero === 'F' ? 'Femenino' : ''}
+                          span.badge.rounded-pill.bg-light.text-dark.ms-1
+                            if cama.genero === 'M'
+                              | Masculino
+                            else if cama.genero === 'F'
+                              | Femenino
+                            else if cama.genero === 'E'
+                              | Emergencia
+                            else
+                              | Sin asignar
 
   .modal.fade#modalCrearHabitacion(tabindex='-1')
     .modal-dialog
