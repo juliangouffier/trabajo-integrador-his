@@ -5,7 +5,7 @@ CREATE TABLE sector (
 
 CREATE TABLE habitacion (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    numero VARCHAR(10) NOT NULL,
+    numero VARCHAR(20) NOT NULL,
     sector_id INT NOT NULL,
     FOREIGN KEY (sector_id) REFERENCES sector(id)
 );

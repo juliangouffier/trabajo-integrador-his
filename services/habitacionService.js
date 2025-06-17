@@ -29,7 +29,8 @@ return habitaciones.map(h => ({
     numero: c.numero,
     estado: c.estado,
     genero: c.admisiones?.[0]?.Paciente?.sexo || '',
-    paciente: c.admisiones?.[0]?.Paciente?.nombre || null
+    paciente: c.admisiones?.[0]?.Paciente?.nombre || null,
+    tipoIngreso: c.admisiones?.[0]?.tipo_ingreso || ''
   }))
 }));
 }
