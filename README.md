@@ -18,7 +18,7 @@ Password: `xxx`
 - Node.js + Express
 - Pug (Motor de plantillas)
 - Sequelize ORM
-- MySQL (Base de datos)
+- MySQL (Base de datos) - Utilice un VPS en OVH Linux con mariadb
 - Render (Deploy en la nube)
 - Bootstrap 5 (Frontend)
 
