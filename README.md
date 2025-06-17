@@ -21,6 +21,7 @@ Password: `xxx`
 - MySQL (Base de datos) - Utilice un VPS en OVH Linux con mariadb
 - Render (Deploy en la nube)
 - Bootstrap 5 (Frontend)
+- JWT Auth
 
 ---
 
