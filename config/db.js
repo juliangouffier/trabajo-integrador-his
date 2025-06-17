@@ -1,9 +1,9 @@
 // db.js (ahora es tu archivo de configuración)
 module.exports = {
-  database: 'sql10783927',
-  username: 'sql10783927',
-  password: 'rhmAd8zlX1',
-  host: 'sql10.freesqldatabase.com',
+  database: 'hisintegrador',
+  username: 'sa',
+  password: 'juliangouffier',
+  host: 'vps-063cf411.vps.ovh.ca',
   port: 3306,
   dialect: 'mysql',
   logging: false,
@@ -11,3 +11,4 @@ module.exports = {
     connectTimeout: 15000,
   }
 };
+ 
