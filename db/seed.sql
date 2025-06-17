@@ -32,19 +32,19 @@ VALUES ('alopez', 3, '$2a$12$bobTdqMG8ls9chnpN3qfuuYeADSaAsH3tfk5mlOs.icX.nLiceU
 
 
 INSERT INTO paciente (dni, nombre, apellido, sexo, fecha_nacimiento, direccion, telefono, contacto_emergencia, obra_social_id, email)
-VALUES (28900876, 'Jorge', 'Pérez', 'M', '1970-06-12', 'Av. España 123, San Luis', '2664112233', 'María Pérez', 1, 'jperez@gmail.com');
+VALUES (28900876, 'Jorge', 'Pérez', 'M', '1970-06-12', 'Av. España 123, San Luis', '2664112233', '2254445678', 1, 'jperez@gmail.com');
 
 INSERT INTO paciente (dni, nombre, apellido, sexo, fecha_nacimiento, direccion, telefono, contacto_emergencia, obra_social_id, email)
-VALUES (29876543, 'Laura', 'Sánchez', 'F', '1985-04-20', 'Calle Junín 456, Villa Mercedes', '2664123344', 'Carlos Sánchez', 2, 'lsanchez@yahoo.com');
+VALUES (29876543, 'Laura', 'Sánchez', 'F', '1985-04-20', 'Calle Junín 456, Villa Mercedes', '2664123344', '2254145678', 2, 'lsanchez@yahoo.com');
 
 INSERT INTO paciente (dni, nombre, apellido, sexo, fecha_nacimiento, direccion, telefono, contacto_emergencia, obra_social_id, email)
-VALUES (31456789, 'Pedro', 'Gómez', 'M', '1950-10-01', 'Barrio Sarmiento Mz 3 C10, San Luis', '2664134455', 'Rosa Gómez', 3, 'pgomez@hotmail.com');
+VALUES (31456789, 'Pedro', 'Gómez', 'M', '1950-10-01', 'Barrio Sarmiento Mz 3 C10, San Luis', '2664134455', '2254345678', 3, 'pgomez@hotmail.com');
 
 INSERT INTO paciente (dni, nombre, apellido, sexo, fecha_nacimiento, direccion, telefono, contacto_emergencia, obra_social_id, email)
-VALUES (30123456, 'Natalia', 'Ferreyra', 'F', '1990-01-15', 'Belgrano 999, San Luis', '2664145566', 'Marcelo Ferreyra', 1, 'nferreyra@gmail.com');
+VALUES (30123456, 'Natalia', 'Ferreyra', 'F', '1990-01-15', 'Belgrano 999, San Luis', '2664145566', '2254455678', 1, 'nferreyra@gmail.com');
 
 INSERT INTO paciente (dni, nombre, apellido, sexo, fecha_nacimiento, direccion, telefono, contacto_emergencia, obra_social_id, email)
-VALUES (31234567, 'Luis', 'Roldán', 'M', '1978-12-25', 'Av. Illia 1500, San Luis', '2664156677', 'Silvia Roldán', 2, 'lroldan@gmail.com');
+VALUES (31234567, 'Luis', 'Roldán', 'M', '1978-12-25', 'Av. Illia 1500, San Luis', '2664156677', '2254456728', 2, 'lroldan@gmail.com');
 
 -- Emergencias
 INSERT INTO habitacion (id, numero, sector_id) VALUES (1, 'E01', 1);

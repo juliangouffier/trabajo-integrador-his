@@ -50,7 +50,8 @@ block content
                               | Emergencia
                             else
                               | Sin asignar
-                        strong #{cama.tipoIngreso || ''}
+                        strong #{cama.tipoIngreso === 'EMERGENCIA' ? 'Emergencia' : cama.tipoIngreso === 'CITA_PROGRAMADA' ? 'Cita Programada' : cama.tipoIngreso === 'DERIVADO' ? 'Derivado' : ''}
+
 
   .modal.fade#modalCrearHabitacion(tabindex='-1')
     .modal-dialog
